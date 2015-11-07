@@ -1,5 +1,7 @@
 'use strict';
 var Hapi = require('hapi');
+var Inert = require('inert');
+var Vision = require('vision');
 var HapiSetup = require('../../lib');
 var Plugins = require('./plugins');
 
@@ -15,15 +17,23 @@ module.exports.prepareServer = function (options, callback) {
   server.connection({labels: ['admin']});
   server.connection();
 
-  server.route({
+  server.route([{
     method: 'GET',
     path: '/about',
     handler: function (request, reply) {
       reply(request.server.plugins['hapi-setup'].setup());
     }
-  });
+  },{
+    method: 'POST',
+    path: '/about',
+    handler: function (request, reply) {
+      reply(request.body);
+    }
+  }]);
 
   server.register([
+    Inert,
+    Vision,
     {
       register: HapiSetup.register,
       options: options
@@ -74,6 +84,8 @@ module.exports.prepareServer = function (options, callback) {
       }
     });
 
-    callback(err, server);
+    server.start(function () {
+      callback(err, server);
+    });
   });
 };
