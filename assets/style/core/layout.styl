@@ -1,7 +1,9 @@
 body
   background-color $tan
   color $grey-dark
-  center(80%)
+
+  +above(1540px)
+    center(80%)
 
 header
   padding 1em
@@ -12,11 +14,23 @@ header
     clear both
 
 .header__logo
-  float left
+  float none
   width 200px
+  margin 0 auto
+
+  +desktop()
+    float left
 
   img
     width 100%
 
 .header__content
-  margin-left 240px
+  margin 0 auto
+  text-align center
+
+  +desktop()
+    margin-left 240px
+    text-align left
+
+main
+  padding 1em
